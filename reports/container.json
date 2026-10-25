@@ -1,0 +1,7 @@
+{
+  "project": "supportpilot",
+  "result": "passed",
+  "image_id": "sha256:6320e7448d9e2df0f05a843501f2a5e1749794282ba0590773b624d52a97af48",
+  "non_root": true,
+  "checks": "isolated container startup and API flow; named-volume persistence; refund approval for SupportPilot; baseline training/inference for LoRA project"
+}
