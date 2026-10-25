@@ -28,3 +28,15 @@ Optional external providers and CUDA-dependent paths require their own runtime v
 The real browser run exercised the offline deterministic workflow, pending refund approval,
 and audit events. Unit tests exercised concurrent decisions and forbidden-tool handling
 with a simulated model reply. A live Ollama model and any real payment provider were not used.
+
+## Container
+
+`docker build -t supportpilot:portfolio .` — passed.
+`python scripts/container_smoke.py` — passed: non-root server, seeded sandbox order,
+customer approval rejection, operator approval, and approved refund persistence after
+a fresh container starts with the same named volume. See `reports/container.json`.
+
+## Hosted CI
+
+[Initial GitHub Actions run](https://github.com/MSaiedd/supportpilot/actions/runs/40206870827) — passed:
+Python 3.11 tests/lint, Python 3.12 tests/lint, and Chromium browser validation.
