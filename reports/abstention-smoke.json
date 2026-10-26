@@ -1,0 +1,71 @@
+{
+  "purpose": "Actual-model local HTTP/SSE walkthrough; factual correctness requires source review",
+  "mode": "adapted",
+  "cases": [
+    {
+      "question": "What is the phone number of Northstar's finance director?",
+      "conversation_id": "a130586f-9712-4acf-8b36-bb61e90a057b",
+      "elapsed_ms": 1469,
+      "first_delta_ms": null,
+      "delta_events": 0,
+      "state": "complete",
+      "answer": "I don't have enough evidence in the selected documents to answer that.",
+      "citations": [],
+      "error": null
+    }
+  ],
+  "workspace": {
+    "name": "Northstar workspace",
+    "identity": {
+      "user": "local-owner",
+      "role": "admin",
+      "auth_mode": "local"
+    },
+    "collections": [
+      {
+        "id": "7e843183-20e4-4a9c-9456-5ac91c984c2f",
+        "name": "Product & billing",
+        "description": "Plans, subscriptions, and billing policies",
+        "color": "indigo",
+        "document_count": 3
+      },
+      {
+        "id": "bc602a79-b2cc-4681-b321-b59672dd5bcd",
+        "name": "Engineering",
+        "description": "API behavior, reliability, and release practices",
+        "color": "teal",
+        "document_count": 3
+      },
+      {
+        "id": "d77a1bad-561d-43d3-81ee-337e1279bd00",
+        "name": "Security & access",
+        "description": "Identity, account protection, and data handling",
+        "color": "rose",
+        "document_count": 3
+      },
+      {
+        "id": "6713532d-c962-4099-afcf-0346232e66e9",
+        "name": "Support operations",
+        "description": "Triage, escalation, and evidence-led answers",
+        "color": "amber",
+        "document_count": 2
+      }
+    ],
+    "stats": {
+      "documents": 11,
+      "ready_documents": 11,
+      "chunks": 11,
+      "answers": 8
+    },
+    "models": {
+      "ready": true,
+      "error": "",
+      "base": "Qwen/Qwen2.5-0.5B-Instruct",
+      "base_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "embedding": "intfloat/multilingual-e5-small",
+      "reranker": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+      "adapted_available": true,
+      "backend": "local"
+    }
+  }
+}

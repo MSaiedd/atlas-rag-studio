@@ -1,0 +1,8 @@
+{
+  "url": "https://github.com/MSaiedd/atlas-rag-studio/releases/tag/v0.2.0",
+  "asset": "grounded-lora.zip",
+  "sha256": "9aaf5469d35f621ceb528a35e1f96e09914cb279c23e8de8e251bdaff35201eb",
+  "bytes": 5959539,
+  "public_download_checked": true,
+  "installed_weights_match_trained_weights": true
+}

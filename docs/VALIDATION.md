@@ -83,3 +83,51 @@ The final artifact was installed at artifacts/grounded-lora after completion.
 Token-weighted validation NLL on 60 rows fell from 1.897993 to 0.689405.
 This is a development training run; the NLL decrease does not establish answer correctness.
 The full settings, losses, dataset hashes and library versions are in `reports/training.json`.
+
+## Hosted CI and release distribution
+
+[GitHub Actions run 40266320122](https://github.com/MSaiedd/atlas-rag-studio/actions/runs/40266320122) — all five jobs passed:
+Python 3.11, Python 3.12 (including the real tiny adapter contract), frontend, PostgreSQL/Qdrant,
+and Chromium browser flow. These checks ran against source commit e0d7e9d912e4be1e041cc19406e983292400c5f7.
+
+`python scripts/download_adapter.py` — tested from an empty temporary working directory against
+the public v0.2.0 release. Archive SHA-256 matched the embedded expected value, extraction succeeded,
+and the installed safetensors bytes matched the locally trained adapter exactly.
+The fixture adapter is a development artifact; downloading it does not change its quality limits.
+
+## Actual base/adapted generation comparison
+
+`ATLAS_OFFLINE=1 python -m atlas_rag.evaluate --mode all --limit 20 --register` — completed.
+The fixed-seed sample has 20 of 80 held-out rows: 9 English and 11 Arabic, 17 answerable and 3 unsupported.
+All retrieval and generation components were real pretrained models; no neural fixture substitutes were used.
+Each generation request included fresh retrieval, and both modes used the same pinned base model.
+
+| Metric | Base | LoRA adapted |
+| --- | ---: | ---: |
+| Structural citation validity | 10% | 80% |
+| Lexical reference fact coverage | 57.5% | 77.5% |
+| Valid answer/abstention decision | 10% | 80% |
+| Mean retrieval + generation time, CPU | 14.07 s | 12.75 s |
+
+Timing is a sequential local workload, including abstentions, not a concurrent serving benchmark.
+Fact coverage is a lexical proxy that includes unsupported-case abstention; it is not semantic accuracy.
+The abstention-decision metric also requires structural validity, so it must not be read as an independent safety score.
+Four adapted answers failed structural validation, with Arabic injection/operational cases among the failures.
+Some valid answers omit requested facts; Arabic can contain garbled phrasing. No production-quality claim follows
+from this small templated fixture. Raw questions, references and answers are in `reports/evaluation.json`.
+
+## Actual running application
+
+The local checkout is now `atlas-rag-studio`. `python ../local_apps.py start --app atlas-rag-studio`
+started the user service on loopback port 8001 with the real E5, reranker, Qwen base and saved adapter.
+`python scripts/live_smoke.py` — five real HTTP/SSE requests completed, taking 10.4–21.0 seconds
+on this CPU. Eleven source documents were already indexed. Answers and source passages were reviewed
+in [RESPONSE_REVIEW.md](RESPONSE_REVIEW.md): incomplete procedures, Arabic quality issues and a
+nonresponsive unsupported-field answer remain, despite valid reference formatting.
+
+`python scripts/capture_workspace.py` — passed against the real running service; captured chat,
+knowledge, evaluation, training and fresh-phone screenshots, with no uncaught browser errors.
+These images show actual source state, trained-model output and measured run records.
+
+`python scripts/live_smoke.py --question "What is the phone number of Northstar's finance director?" --output reports/abstention-smoke.json` — completed in 1.469 seconds with the canonical insufficient-evidence answer.
+This separate success does not erase the harder unsupported-field failure recorded above.

@@ -29,6 +29,15 @@ Reference validation checks IDs and paragraph-level citation presence; it does n
 and decline unsupported questions. **Retrieval supplies changing facts:** updating a policy does not
 require retraining the model.
 
+## Recorded development results
+
+On a fixed-seed **20/80 held-out sample**, the 128-step LoRA run improved structural citation validity
+from **10% to 80%** and lexical reference fact coverage from **57.5% to 77.5%**. The full 80-case
+retrieval run recovered every expected source in the top five for its 64 answerable cases.
+These are original synthetic-fixture measurements; citation formatting and lexical overlap do not
+establish semantic accuracy. Arabic quality and complete procedural answers remain limitations.
+See [raw reports](reports/) and the [answer review](docs/RESPONSE_REVIEW.md).
+
 ## Product experience
 
 - React + TypeScript workspace, responsive navigation, accessible dialogs, and a pinned chat composer.
@@ -141,7 +150,8 @@ python scripts/browser_smoke.py
 CI browser tests substitute neural components to avoid model downloads; authorization, SQL,
 Qdrant, file processing, API routes and the browser UI are real. Separate recorded local runs
 exercise the actual embedding, reranking, base and adapted generation models.
-See [validation](docs/VALIDATION.md) for exact commands and outcomes.
+See [validation](docs/VALIDATION.md) for exact commands and outcomes, and
+[actual answer review](docs/RESPONSE_REVIEW.md) for observed omissions and language failures.
 
 ## PostgreSQL + Qdrant deployment shape
 

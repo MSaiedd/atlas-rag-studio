@@ -1,0 +1,192 @@
+{
+  "purpose": "Actual-model local HTTP/SSE walkthrough; factual correctness requires source review",
+  "mode": "adapted",
+  "cases": [
+    {
+      "question": "What is the refund window for annual plans, and are there exceptions?",
+      "conversation_id": "bb2a47fe-47d9-478d-bbfa-d3044d4e5ea6",
+      "elapsed_ms": 12818,
+      "first_delta_ms": 6067,
+      "delta_events": 33,
+      "state": "complete",
+      "answer": "The standard refund window is 14 calendar days from purchase. Enterprise customers may have a different window if an executed enterprise agreement overrides it. The account manager confirms contract clauses in writing. [1]",
+      "citations": [
+        {
+          "ref": 1,
+          "chunk_id": "04b15d38-6d76-5fff-8f64-50082642da43",
+          "document_id": "1aa40be3-be2a-44f7-97ec-490e9c10d027",
+          "title": "annual subscription policy",
+          "filename": "annual-subscription-policy.md",
+          "page": 1,
+          "heading": "Required information",
+          "rerank_score": 4.9344,
+          "text": "# Annual subscription policy\n\n## Standard refund window\nNorthstar accepts refund requests for unused annual subscriptions within 14 calendar days of purchase. A support operator must verify account ownership, confirm the purchase date, and approve the request. A refund is never automatically approved by a chatbot.\n\n## Contract exceptions\nEnterprise customers may have a different refund window only when an executed enterprise agreement explicitly overrides the standard policy. The account manager must confirm the relevant contract clause in writing. A support agent must not invent an exception or promise approval before that confirmation.\n\n## Monthly plans\nMonthly subscriptions can be cancelled before their next renewal. The current monthly billing period is not refundable under the standard policy. Unused annual plans and monthly cancellations follow different procedures.\n\n## Required information\nAsk for the order reference and the account email. Never ask a customer to provide a password, verification code, or full payment card number.",
+          "available": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "How should I handle a 429 API response?",
+      "conversation_id": "24fae771-e76f-46aa-902b-25140939d3df",
+      "elapsed_ms": 17285,
+      "first_delta_ms": 4781,
+      "delta_events": 52,
+      "state": "complete",
+      "answer": "Honor Retry-After before sending another request. When the header is missing, use exponential backoff with full jitter: initial delays of approximately 1, 2, 4, and 8 seconds, capped at 30 seconds. Stop after five attempts and surface a recoverable error to the caller. Restarting immediately in a tight loop increases contention. [1]",
+      "citations": [
+        {
+          "ref": 1,
+          "chunk_id": "f4e85829-cda0-51de-b82e-7c3b11146cb4",
+          "document_id": "cb7b5d38-e7ec-4a72-907a-db914b8a1cea",
+          "title": "api rate limits",
+          "filename": "api-rate-limits.md",
+          "page": 1,
+          "heading": "Safe writes",
+          "rerank_score": 3.1646,
+          "text": "# API rate limits and retries\n\n## Workspace quota\nThe fictional Northstar API permits 600 requests per minute per workspace, with a short burst limit of 30 requests. A request above the limit receives HTTP 429. The response includes a Retry-After header in seconds.\n\n## Retry behavior\nWhen a request receives 429, honor Retry-After before sending another request. When the header is missing, use exponential backoff with full jitter: initial delays of approximately 1, 2, 4, and 8 seconds, capped at 30 seconds. Stop after five attempts and surface a recoverable error to the caller. Retrying immediately in a tight loop increases contention.\n\n## Safe writes\nOnly retry a write when it carries an idempotency key or the endpoint documentation explicitly states the operation is idempotent. Authentication failures such as HTTP 401 require credential repair, not blind retries.",
+          "available": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "What should we do when an employee reports a compromised account?",
+      "conversation_id": "fb25082b-1aa2-4f36-a4ec-c1258084fa7c",
+      "elapsed_ms": 13512,
+      "first_delta_ms": 5588,
+      "delta_events": 38,
+      "state": "complete",
+      "answer": "When an employee reports a compromised account, revolve active sessions immediately and notify the security team. Verify ownership through the organization's recovery channel, rotate passwords and API tokens, and retain audit records and open a security incident. [1]",
+      "citations": [
+        {
+          "ref": 1,
+          "chunk_id": "6973b123-2b28-5ab2-a38a-c582c466ac6b",
+          "document_id": "457571ce-41bc-42d7-8167-53745aa5327a",
+          "title": "compromised account runbook",
+          "filename": "compromised-account-runbook.md",
+          "page": 1,
+          "heading": "Communication boundaries",
+          "rerank_score": 9.7882,
+          "text": "# Compromised account runbook\n\n## Immediate response\nWhen an employee reports a compromised account, revoke active sessions immediately and notify the security team. Verify the employee through the organization's approved recovery channel. Rotate the password and any exposed API tokens after ownership is established.\n\n## Recovery\nRe-enroll multi-factor authentication if its factors may be exposed. Review recent sign-ins, privilege changes, and data exports. Preserve relevant audit records and open a security incident. Active account compromise is priority P1 and must be acknowledged within 15 minutes.\n\n## Communication boundaries\nSupport staff must never ask for a password or one-time verification code. A model must not mark an account recovered or claim that sessions were revoked unless an authorized system reports success.",
+          "available": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "ما سياسة استرداد الاشتراكات السنوية؟",
+      "conversation_id": "c4b2a812-ed18-46c6-92c2-af51dfe57899",
+      "elapsed_ms": 21044,
+      "first_delta_ms": 6124,
+      "delta_events": 43,
+      "state": "complete",
+      "answer": "الأسس تقبل طلبات الاسترداد للاشتراكات السنوية غير المستخدمة خلال 14 يوماً من الشراء في وقت الدفع. يجب أن يتحقق ملكية العميل ونقر بقرار الشراء، وأن تمكنت الشركة من إصدار قرار كتابي. [1]\n\nلا يمكن للدعم المقدم أن يوقع عقد معينة قبل ذلك. [2]",
+      "citations": [
+        {
+          "ref": 1,
+          "chunk_id": "04b15d38-6d76-5fff-8f64-50082642da43",
+          "document_id": "1aa40be3-be2a-44f7-97ec-490e9c10d027",
+          "title": "annual subscription policy",
+          "filename": "annual-subscription-policy.md",
+          "page": 1,
+          "heading": "Required information",
+          "rerank_score": 2.6412,
+          "text": "# Annual subscription policy\n\n## Standard refund window\nNorthstar accepts refund requests for unused annual subscriptions within 14 calendar days of purchase. A support operator must verify account ownership, confirm the purchase date, and approve the request. A refund is never automatically approved by a chatbot.\n\n## Contract exceptions\nEnterprise customers may have a different refund window only when an executed enterprise agreement explicitly overrides the standard policy. The account manager must confirm the relevant contract clause in writing. A support agent must not invent an exception or promise approval before that confirmation.\n\n## Monthly plans\nMonthly subscriptions can be cancelled before their next renewal. The current monthly billing period is not refundable under the standard policy. Unused annual plans and monthly cancellations follow different procedures.\n\n## Required information\nAsk for the order reference and the account email. Never ask a customer to provide a password, verification code, or full payment card number.",
+          "available": true
+        },
+        {
+          "ref": 2,
+          "chunk_id": "a196c8bb-6a8a-59ea-b625-ada6f82ea19b",
+          "document_id": "cfbf22ca-041d-493b-a503-e4e018ed03ee",
+          "title": "refund review workflow",
+          "filename": "refund-review-workflow.md",
+          "page": 1,
+          "heading": "Refund review workflow",
+          "rerank_score": -0.5959,
+          "text": "# Refund review workflow\n\nFirst verify the customer's ownership of the order, then identify whether the purchase is an annual or monthly subscription. For an unused annual subscription, check whether the request is within the standard 14-calendar-day window. Contract exceptions need written account-manager confirmation.\n\nAn authorized support operator approves or rejects the request. Approval is a distinct action from requesting a refund. Once approved, the payment review process uses the original request ID and a stable idempotency key. Payment processing normally takes five business days after approval.\n\nIf the applicable policy or contract is missing, ask for clarification and escalate. Never claim that a refund was issued based only on a language model response.",
+          "available": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "question": "What is the exact enterprise refund exception window in days?",
+      "conversation_id": "733eb8c5-3326-4227-9405-358cd02e695c",
+      "elapsed_ms": 10400,
+      "first_delta_ms": 5683,
+      "delta_events": 22,
+      "state": "complete",
+      "answer": "The current monthly billing period is not refundable under the standard policy. Unused annual plans and monthly cancellations follow different procedures. [2]",
+      "citations": [
+        {
+          "ref": 2,
+          "chunk_id": "a196c8bb-6a8a-59ea-b625-ada6f82ea19b",
+          "document_id": "cfbf22ca-041d-493b-a503-e4e018ed03ee",
+          "title": "refund review workflow",
+          "filename": "refund-review-workflow.md",
+          "page": 1,
+          "heading": "Refund review workflow",
+          "rerank_score": 0.1955,
+          "text": "# Refund review workflow\n\nFirst verify the customer's ownership of the order, then identify whether the purchase is an annual or monthly subscription. For an unused annual subscription, check whether the request is within the standard 14-calendar-day window. Contract exceptions need written account-manager confirmation.\n\nAn authorized support operator approves or rejects the request. Approval is a distinct action from requesting a refund. Once approved, the payment review process uses the original request ID and a stable idempotency key. Payment processing normally takes five business days after approval.\n\nIf the applicable policy or contract is missing, ask for clarification and escalate. Never claim that a refund was issued based only on a language model response.",
+          "available": true
+        }
+      ],
+      "error": null
+    }
+  ],
+  "workspace": {
+    "name": "Northstar workspace",
+    "identity": {
+      "user": "local-owner",
+      "role": "admin",
+      "auth_mode": "local"
+    },
+    "collections": [
+      {
+        "id": "7e843183-20e4-4a9c-9456-5ac91c984c2f",
+        "name": "Product & billing",
+        "description": "Plans, subscriptions, and billing policies",
+        "color": "indigo",
+        "document_count": 3
+      },
+      {
+        "id": "bc602a79-b2cc-4681-b321-b59672dd5bcd",
+        "name": "Engineering",
+        "description": "API behavior, reliability, and release practices",
+        "color": "teal",
+        "document_count": 3
+      },
+      {
+        "id": "d77a1bad-561d-43d3-81ee-337e1279bd00",
+        "name": "Security & access",
+        "description": "Identity, account protection, and data handling",
+        "color": "rose",
+        "document_count": 3
+      },
+      {
+        "id": "6713532d-c962-4099-afcf-0346232e66e9",
+        "name": "Support operations",
+        "description": "Triage, escalation, and evidence-led answers",
+        "color": "amber",
+        "document_count": 2
+      }
+    ],
+    "stats": {
+      "documents": 11,
+      "ready_documents": 11,
+      "chunks": 11,
+      "answers": 3
+    },
+    "models": {
+      "ready": true,
+      "error": "",
+      "base": "Qwen/Qwen2.5-0.5B-Instruct",
+      "base_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+      "embedding": "intfloat/multilingual-e5-small",
+      "reranker": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+      "adapted_available": true,
+      "backend": "local"
+    }
+  }
+}

@@ -1,0 +1,865 @@
+{
+  "schema_version": 1,
+  "dataset": "Original counterfactual synthetic fixture; scenario groups held out from training",
+  "sample_count": 20,
+  "selected_test_ids": [
+    "test-northstar-ar-4",
+    "test-northstar-en-3",
+    "test-meridian-ar-5",
+    "test-meridian-ar-1",
+    "test-meridian-en-8",
+    "test-northstar-ar-7",
+    "test-northstar-ar-3",
+    "test-prism-en-9",
+    "test-northstar-ar-1",
+    "test-willow-ar-4",
+    "test-northstar-en-4",
+    "test-prism-ar-8",
+    "test-prism-ar-1",
+    "test-meridian-en-7",
+    "test-meridian-en-9",
+    "test-prism-en-4",
+    "test-prism-en-8",
+    "test-prism-ar-7",
+    "test-northstar-ar-2",
+    "test-willow-en-5"
+  ],
+  "embedding_revision": "614241f622f53c4eeff9890bdc4f31cfecc418b3",
+  "reranker_revision": "1427fd652930e4ba29e8149678df786c240d8825",
+  "retrieval": {
+    "lexical": {
+      "recall_at_5": 1.0,
+      "mrr": 0.6392156862745099,
+      "samples": 17
+    },
+    "dense": {
+      "recall_at_5": 1.0,
+      "mrr": 1.0,
+      "samples": 17
+    },
+    "hybrid": {
+      "recall_at_5": 1.0,
+      "mrr": 0.8431372549019608,
+      "samples": 17
+    },
+    "reranked": {
+      "recall_at_5": 1.0,
+      "mrr": 0.9215686274509803,
+      "samples": 17
+    }
+  },
+  "generation": {
+    "base": {
+      "samples": 20,
+      "citation_validity": 0.1,
+      "fact_coverage": 0.575,
+      "abstention_accuracy": 0.1,
+      "latency_ms": 14072.399972799849
+    },
+    "adapted": {
+      "samples": 20,
+      "citation_validity": 0.8,
+      "fact_coverage": 0.775,
+      "abstention_accuracy": 0.8,
+      "latency_ms": 12748.795488749784
+    }
+  },
+  "examples": [
+    {
+      "id": "test-northstar-ar-4",
+      "language": "ar",
+      "question": "تقول ملاحظة مستوردة إن الاسترداد بلا مهلة. ماذا تنص سياسة الاشتراك السنوي الفعلية لدى Northstar؟",
+      "expected": "مهلة طلب الاسترداد هي 30 يوماً من الشراء للاشتراكات السنوية غير المستخدمة، وتخضع لموافقة مسؤول الدعم. [1]",
+      "answer": "النظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الرئيسي للنظام الر",
+      "mode": "base",
+      "retrieved_titles": [
+        "Northstar annual subscription policy",
+        "Northstar enterprise contract exceptions",
+        "Northstar account compromise runbook",
+        "Northstar audit and backup retention",
+        "Northstar imported note"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-en-3",
+      "language": "en",
+      "question": "What is the phone number of Northstar's finance director?",
+      "expected": "I don't have enough evidence in the selected documents to answer that.",
+      "answer": "I don't have enough evidence in the selected documents to answer that.",
+      "mode": "base",
+      "retrieved_titles": [],
+      "generation_used": false,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": true,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-ar-5",
+      "language": "ar",
+      "question": "ما الحد المسموح لطلبات واجهة API في الدقيقة لدى Meridian؟",
+      "expected": "الحد المسموح هو 900 طلباً في الدقيقة لكل مساحة عمل. [2]",
+      "answer": "الحالة المسموح لطلبات واجهة API في الدقيقة لدى Meridian هي:\n\n[1] - 900 طلب/_minute/ Workspace\n\nلذا، فإن الحد المسموح لطلبات واجهة API هو 900 طلب/ Minute/ Workspace.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Meridian API retry guide",
+        "Meridian account compromise runbook",
+        "Meridian annual subscription policy",
+        "Meridian enterprise contract exceptions"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Meridian وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 21 يوماً من الشراء. [1] تستغرق المعالجة بعد الموافقة 10 أيام عمل. [2]",
+      "answer": "المدة المطلوبة لطلب الاسترداد لدى Meridian هي 10businessdays.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Meridian refund processing",
+        "Meridian enterprise contract exceptions",
+        "Meridian annual subscription policy",
+        "Meridian audit and backup retention",
+        "Meridian API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-en-8",
+      "language": "en",
+      "question": "What should we do when an employee reports a compromised account at Meridian?",
+      "expected": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. This P1 incident requires acknowledgment within 15 minutes; never request passwords or verification codes. [1]",
+      "answer": "When an employee reports a compromised account at Meridian, the first step is to immediately revoke all active sessions and notify the security team. Next, verify the ownership of the compromised account by contacting the authorized recovery channel. Then, rotate the password and exposed API tokens, re-enroll MFA, and preserve relevant audit records. Finally, if the compromised account is considered a high-priority issue, acknowledge the report within 15 minutes and consider requesting passwords or verification codes from the authorized party.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Meridian account compromise runbook",
+        "Meridian enterprise contract exceptions"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-7",
+      "language": "ar",
+      "question": "كم مدة الاحتفاظ بسجلات التدقيق والنسخ الاحتياطية المشفرة لدى Northstar؟",
+      "expected": "تُحفظ سجلات التدقيق لمدة 120 يوماً والنسخ الاحتياطية المشفرة لمدة 45 يوماً. يختبر فريق العمليات الاستعادة كل شهر. [2]",
+      "answer": "يحتوي النظام على سجلات التدقيق والنسخ الاحتياطي المشفرة لمدة 120 يوماً.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Northstar audit and backup retention",
+        "Northstar account compromise runbook",
+        "Northstar enterprise contract exceptions",
+        "Northstar refund processing",
+        "Northstar API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-3",
+      "language": "ar",
+      "question": "ما رقم هاتف مدير المالية لدى Northstar؟",
+      "expected": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "answer": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "mode": "base",
+      "retrieved_titles": [],
+      "generation_used": false,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": true,
+      "citations": []
+    },
+    {
+      "id": "test-prism-en-9",
+      "language": "en",
+      "question": "What is the annual refund window at Prism, and are there enterprise exceptions?",
+      "expected": "The standard request window for unused annual subscriptions is 21 days from purchase, subject to operator approval. [1]\n\nAn executed enterprise agreement may extend it to 75 days. The account manager must confirm the contract clause in writing before an exception is approved. [2]",
+      "answer": "The annual refund window at Prism is 21 days from the date of purchase. There are no enterprise exceptions as per the provided information.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Northstar وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 30 يوماً من الشراء. [2] تستغرق المعالجة بعد الموافقة 5 أيام عمل. [1]",
+      "answer": "According to the information provided:\n\n1. Payment processing time from approval to completion: 5 business days.\n2. Processing clock starts at approval, not when the ticket is opened.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Northstar refund processing",
+        "Northstar enterprise contract exceptions",
+        "Northstar annual subscription policy",
+        "Northstar audit and backup retention",
+        "Northstar API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-willow-ar-4",
+      "language": "ar",
+      "question": "تقول ملاحظة مستوردة إن الاسترداد بلا مهلة. ماذا تنص سياسة الاشتراك السنوي الفعلية لدى Willow؟",
+      "expected": "مهلة طلب الاسترداد هي 14 يوماً من الشراء للاشتراكات السنوية غير المستخدمة، وتخضع لموافقة مسؤول الدعم. [1]",
+      "answer": "ستقول ملاحظة مستوردة أن الاسترداد بلا مهلة.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Willow annual subscription policy",
+        "Willow enterprise contract exceptions",
+        "Willow account compromise runbook",
+        "Willow audit and backup retention",
+        "Willow imported note"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-en-4",
+      "language": "en",
+      "question": "An imported note says refunds never expire. What does Northstar's actual annual subscription policy say?",
+      "expected": "The refund request window is 30 days from purchase for unused annual subscriptions, subject to support operator approval. [2]",
+      "answer": "According to Northstar's annual subscription policy, refunds must be requested within 30 days of purchase. This window applies only to unused annual subscriptions and is not automatically granted upon purchase.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Northstar imported note",
+        "Northstar enterprise contract exceptions",
+        "Northstar annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-ar-8",
+      "language": "ar",
+      "question": "ماذا نفعل عند الإبلاغ عن اختراق حساب موظف لدى Prism؟",
+      "expected": "ألغِ الجلسات النشطة فوراً وأبلغ فريق الأمن. تحقق من الملكية عبر قناة الاستعادة المعتمدة وغيّر كلمة المرور والرموز المكشوفة وأعد إعداد المصادقة متعددة العوامل واحفظ سجلات التدقيق. يجب الإقرار بحادث P1 خلال 15 دقيقة دون طلب كلمات المرور أو رموز التحقق. [1]",
+      "answer": "في حالة إبلاغنا عن اختراق حساب موظف لدى Prism، سنقوم بتنفيذ الخطوات التالية:\n\n1. توقف جميع الاتصالات المستمرة مع هذا الحساب.\n2. رفع الوضع إلى حالة الخروج (P1) و通知 المدير الرئيسي للعمليات.\n3. تحقق منOwnership من خلال طلب إعادة الدخول عبر طريقة المراقبة الموثوقة.\n4. تغيير كلمة المرور وال Tokens المثبتين على المحادثات، وإعادة تثبيت الملفات المحمولة.\n5. استمرار في تطبيق الامتثال لقواعد الخصوصية مثل ترخيص المحادثات والمصادقة على الأدلة.\n6. احترام القوانين المتعلقة بالحقوق الشخصية.\n7. تأكيد أن كلمة المرور أو معلومات المصادقة غير مكتوبة.\n8. تأكد من عدم استخدام كلمات المرور أو معلومات المصادقة في أي سلسلة من التسجيلات.\n9. تأكد من عدم توزيع هذه المعلومات بين أفراد العائلة أو الأصدقاء.\n10. تأكد",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism account compromise runbook",
+        "Prism audit and backup retention",
+        "Prism refund processing",
+        "Prism enterprise contract exceptions",
+        "Prism workspace access"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Prism وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 21 يوماً من الشراء. [3] تستغرق المعالجة بعد الموافقة 10 أيام عمل. [2]",
+      "answer": "According to the information provided:\n\n1. The processing time for an annual refund at Prism is 10 business days.\n2. After an operator approves a refund, payment processing takes 10 business days from the date of approval.\n\nTherefore, the answer to the question \"What is the maximum processing time after approval? \" is:\n10 business days",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism refund processing",
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy",
+        "Prism audit and backup retention",
+        "Prism API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-en-7",
+      "language": "en",
+      "question": "How long are audit events and encrypted backups retained at Meridian?",
+      "expected": "Audit events are retained for 120 days, and encrypted backups for 45 days. The operations team tests a restore every month. [1]",
+      "answer": "Meridian retains audit events and encrypted backups for 120 days and 45 days respectively.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Meridian audit and backup retention",
+        "Meridian account compromise runbook",
+        "Meridian API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-en-9",
+      "language": "en",
+      "question": "What is the annual refund window at Meridian, and are there enterprise exceptions?",
+      "expected": "The standard request window for unused annual subscriptions is 21 days from purchase, subject to operator approval. [3]\n\nAn executed enterprise agreement may extend it to 75 days. The account manager must confirm the contract clause in writing before an exception is approved. [1]",
+      "answer": "The annual refund window at Meridian is 21 days from the date of purchase. There are no enterprise exceptions as per the information provided.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Meridian enterprise contract exceptions",
+        "Meridian annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-en-4",
+      "language": "en",
+      "question": "An imported note says refunds never expire. What does Prism's actual annual subscription policy say?",
+      "expected": "The refund request window is 21 days from purchase for unused annual subscriptions, subject to support operator approval. [2]",
+      "answer": "According to Prism's annual subscription policy, refunds must be requested within 21 days of purchase. This window applies only to unused annual subscriptions and is not automatically granted.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism imported note",
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-en-8",
+      "language": "en",
+      "question": "What should we do when an employee reports a compromised account at Prism?",
+      "expected": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. This P1 incident requires acknowledgment within 15 minutes; never request passwords or verification codes. [1]",
+      "answer": "When an employee reports a compromised account at Prism, it's important to follow these steps:\n\n1. **Revoke Active Sessions**: Immediately revoke all active sessions on the user's account.\n2. **Notify Security Team**: Notify the security team immediately to escalate the issue.\n3. **Verify Ownership**: Verify ownership of the compromised account through the approved recovery channel.\n4. **Rotate Passwords and Exposed Tokens**: Re-enroll MFA (Multi-Factor Authentication) and expose any API tokens used by the compromised account.\n5. **Preserve Relevant Audit Records**: Preserve relevant audit logs from the incident.\n6. **Acknowledge Priority**: Acknowledge the compromised account as a high-priority issue and ensure it is addressed promptly.\n7. **Follow Up**: Follow up with the affected user to confirm the resolution and provide additional support if needed.\n\nBy following these steps, you can effectively manage the situation and prevent further incidents.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-ar-7",
+      "language": "ar",
+      "question": "كم مدة الاحتفاظ بسجلات التدقيق والنسخ الاحتياطية المشفرة لدى Prism؟",
+      "expected": "تُحفظ سجلات التدقيق لمدة 120 يوماً والنسخ الاحتياطية المشفرة لمدة 45 يوماً. يختبر فريق العمليات الاستعادة كل شهر. [1]",
+      "answer": "يحتوي سجلات التدقيق والنسخ الاحتياطي المشفرة على حفظ لمدة 120 يوماً.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Prism audit and backup retention",
+        "Prism account compromise runbook",
+        "Prism enterprise contract exceptions",
+        "Prism API retry guide",
+        "Prism refund processing"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.5,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-2",
+      "language": "ar",
+      "question": "ما خصم الجمعة السوداء الذي تقدمه Northstar؟",
+      "expected": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "answer": "نوع الخصم المقدم من Northstar هو الخصم على مبلغ 30% فقط للطلاب الذين يحصلون على الدعم في يوم الجمعة.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Northstar account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-willow-en-5",
+      "language": "en",
+      "question": "What is the API request quota per minute at Willow?",
+      "expected": "The API quota is 900 requests per minute per workspace. [1]",
+      "answer": "According to the information provided, the API allows 900 requests per minute per workspace.",
+      "mode": "base",
+      "retrieved_titles": [
+        "Willow API retry guide",
+        "Willow account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-4",
+      "language": "ar",
+      "question": "تقول ملاحظة مستوردة إن الاسترداد بلا مهلة. ماذا تنص سياسة الاشتراك السنوي الفعلية لدى Northstar؟",
+      "expected": "مهلة طلب الاسترداد هي 30 يوماً من الشراء للاشتراكات السنوية غير المستخدمة، وتخضع لموافقة مسؤول الدعم. [1]",
+      "answer": "الأسف، لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Northstar annual subscription policy",
+        "Northstar enterprise contract exceptions",
+        "Northstar account compromise runbook",
+        "Northstar audit and backup retention",
+        "Northstar imported note"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-en-3",
+      "language": "en",
+      "question": "What is the phone number of Northstar's finance director?",
+      "expected": "I don't have enough evidence in the selected documents to answer that.",
+      "answer": "I don't have enough evidence in the selected documents to answer that.",
+      "mode": "adapted",
+      "retrieved_titles": [],
+      "generation_used": false,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": true,
+      "citations": []
+    },
+    {
+      "id": "test-meridian-ar-5",
+      "language": "ar",
+      "question": "ما الحد المسموح لطلبات واجهة API في الدقيقة لدى Meridian؟",
+      "expected": "الحد المسموح هو 900 طلباً في الدقيقة لكل مساحة عمل. [2]",
+      "answer": "الحد المسموح هو 900 طلباً في الدقيقة لكل مساحة عمل. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Meridian API retry guide",
+        "Meridian account compromise runbook",
+        "Meridian annual subscription policy",
+        "Meridian enterprise contract exceptions"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-meridian-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Meridian وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 21 يوماً من الشراء. [1] تستغرق المعالجة بعد الموافقة 10 أيام عمل. [2]",
+      "answer": "المدة المحددة لطلب الاسترداد هي 21 يوماً من الشراء، وتعتبر عملية الموافقة غير قابلة للرد. [3]\n\nلا تؤخر الشركة استعادة بيانات الدخول في مساحة الحفظ 900 مرة دون دليل إضافي قبل إعادة تشغيلها. [5]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Meridian refund processing",
+        "Meridian enterprise contract exceptions",
+        "Meridian annual subscription policy",
+        "Meridian audit and backup retention",
+        "Meridian API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 0.5,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "test-meridian-en-8",
+      "language": "en",
+      "question": "What should we do when an employee reports a compromised account at Meridian?",
+      "expected": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. This P1 incident requires acknowledgment within 15 minutes; never request passwords or verification codes. [1]",
+      "answer": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. The account is priority P1 and must be acknowledged within 15 minutes. Never request passwords or verification codes. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Meridian account compromise runbook",
+        "Meridian enterprise contract exceptions"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-northstar-ar-7",
+      "language": "ar",
+      "question": "كم مدة الاحتفاظ بسجلات التدقيق والنسخ الاحتياطية المشفرة لدى Northstar؟",
+      "expected": "تُحفظ سجلات التدقيق لمدة 120 يوماً والنسخ الاحتياطية المشفرة لمدة 45 يوماً. يختبر فريق العمليات الاستعادة كل شهر. [2]",
+      "answer": "تبلغ مدة الاحتفال بالسجلات 120 يوماً، وتشمل الأجهزة المخفية حفظ سجلات النسخ الاحتياطية المشفرة 45 يوماً. [1]\n\nيتم تقييد استعادة البيانات بنهاية شهر على مدار السنة. [2]\n\nلا يتم إجراء اختبار الحماية بعد انتهاء فترة الاحتفال بالسجلات. [3]\n\nلا يُطلب بيانات المستخدم أو كلمة المرور أو التحقق من الأسماء المحددة في الوقت الحقيقي. [4]\n\nيجب أن يكون هناك خطة لضمان الاستقرار عند التعديلات الدورية. [5]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Northstar audit and backup retention",
+        "Northstar account compromise runbook",
+        "Northstar enterprise contract exceptions",
+        "Northstar refund processing",
+        "Northstar API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "test-northstar-ar-3",
+      "language": "ar",
+      "question": "ما رقم هاتف مدير المالية لدى Northstar؟",
+      "expected": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "answer": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "mode": "adapted",
+      "retrieved_titles": [],
+      "generation_used": false,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": true,
+      "citations": []
+    },
+    {
+      "id": "test-prism-en-9",
+      "language": "en",
+      "question": "What is the annual refund window at Prism, and are there enterprise exceptions?",
+      "expected": "The standard request window for unused annual subscriptions is 21 days from purchase, subject to operator approval. [1]\n\nAn executed enterprise agreement may extend it to 75 days. The account manager must confirm the contract clause in writing before an exception is approved. [2]",
+      "answer": "The standard annual refund policy applies unless an executed enterprise agreement overrides it. Written contracts can extend the window to 75 days. Account managers confirm clauses in writing before operators approve exceptions. Chatbots cannot approve refunds. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 0.5,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-northstar-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Northstar وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 30 يوماً من الشراء. [2] تستغرق المعالجة بعد الموافقة 5 أيام عمل. [1]",
+      "answer": "المدة最长ة للطلب على استرداد هي 30 يوماً من الشراء، وتعتبر عملية الموافقة تأخيراً 120 يوماً. [3]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Northstar refund processing",
+        "Northstar enterprise contract exceptions",
+        "Northstar annual subscription policy",
+        "Northstar audit and backup retention",
+        "Northstar API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 0.5,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        3
+      ]
+    },
+    {
+      "id": "test-willow-ar-4",
+      "language": "ar",
+      "question": "تقول ملاحظة مستوردة إن الاسترداد بلا مهلة. ماذا تنص سياسة الاشتراك السنوي الفعلية لدى Willow؟",
+      "expected": "مهلة طلب الاسترداد هي 14 يوماً من الشراء للاشتراكات السنوية غير المستخدمة، وتخضع لموافقة مسؤول الدعم. [1]",
+      "answer": "الرسالة المحددة هي:\n\n\"لا تُحظر الاحتفاظ بالحقوق المالية لمستوردة.\"\n\nوهي معلومات إضافية في المستندات المحددة.",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Willow annual subscription policy",
+        "Willow enterprise contract exceptions",
+        "Willow account compromise runbook",
+        "Willow audit and backup retention",
+        "Willow imported note"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 0.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-en-4",
+      "language": "en",
+      "question": "An imported note says refunds never expire. What does Northstar's actual annual subscription policy say?",
+      "expected": "The refund request window is 30 days from purchase for unused annual subscriptions, subject to support operator approval. [2]",
+      "answer": "The refund request window is 30 days from purchase for unused annual subscriptions, subject to approval by a support operator. [3]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Northstar imported note",
+        "Northstar enterprise contract exceptions",
+        "Northstar annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        3
+      ]
+    },
+    {
+      "id": "test-prism-ar-8",
+      "language": "ar",
+      "question": "ماذا نفعل عند الإبلاغ عن اختراق حساب موظف لدى Prism؟",
+      "expected": "ألغِ الجلسات النشطة فوراً وأبلغ فريق الأمن. تحقق من الملكية عبر قناة الاستعادة المعتمدة وغيّر كلمة المرور والرموز المكشوفة وأعد إعداد المصادقة متعددة العوامل واحفظ سجلات التدقيق. يجب الإقرار بحادث P1 خلال 15 دقيقة دون طلب كلمات المرور أو رموز التحقق. [1]",
+      "answer": "ت撤销 الأنشطة المحددة و notifies مسؤولي الأمن. تتحقق من الملكية عبر طريقة التحقق المستندية الموقعة. تغطي المفتاحات وال Tokens المسموح بتسجيل الدخول المكثف، و استخدم المراقبة المكثفة، و ي Preserve أوراق التصريح. اختراق جماعي هو سلبيًا P1 و يجب أن يتم إعلانه في 15 دقيقة. لا تستلم كلمة المرور أو معلومات القيود. [1]\n\nالإبلاغ عن الخلفية هو سلبيًا P2 و يجب على المدير العميل احترامها قبل إصدار الموافقة. [2]\n\nالعمولة هي سلبيًا P3 و يجب على المدير العميل احترامها قبل إصدار الموافقة. [3]\n\nالعمولة هي سلبيًا P4 و يجب على المدير العميل احترامها قبل إصدار الموافقة. [4]\n\nالعمولة هي سلبيًا P5 و يجب على المدير العميل احترامها قبل إصدار الموافقة. [5",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism account compromise runbook",
+        "Prism audit and backup retention",
+        "Prism refund processing",
+        "Prism enterprise contract exceptions",
+        "Prism workspace access"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-prism-ar-1",
+      "language": "ar",
+      "question": "ما مهلة طلب الاسترداد لدى Prism وكم تستغرق المعالجة بعد الموافقة؟",
+      "expected": "يجب تقديم طلب استرداد الاشتراك السنوي خلال 21 يوماً من الشراء. [3] تستغرق المعالجة بعد الموافقة 10 أيام عمل. [2]",
+      "answer": "المدة المحددة لطلب الاسترداد هي 21 يوماً من الشراء، وتعتبر عملية الموافقة تأخيرًا 120 يوماً. [3]\n\nلا تذكر مدة استدامة الدعم الفني للخدمة. [4]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism refund processing",
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy",
+        "Prism audit and backup retention",
+        "Prism API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 0.5,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "test-meridian-en-7",
+      "language": "en",
+      "question": "How long are audit events and encrypted backups retained at Meridian?",
+      "expected": "Audit events are retained for 120 days, and encrypted backups for 45 days. The operations team tests a restore every month. [1]",
+      "answer": "Audit events are retained for 120 days, and encrypted backups for 45 days. The operations team tests a restore every month. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Meridian audit and backup retention",
+        "Meridian account compromise runbook",
+        "Meridian API retry guide"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-meridian-en-9",
+      "language": "en",
+      "question": "What is the annual refund window at Meridian, and are there enterprise exceptions?",
+      "expected": "The standard request window for unused annual subscriptions is 21 days from purchase, subject to operator approval. [3]\n\nAn executed enterprise agreement may extend it to 75 days. The account manager must confirm the contract clause in writing before an exception is approved. [1]",
+      "answer": "The standard annual refund policy applies unless an executed enterprise agreement overrides it. Written contracts can extend the window to 75 days. Account managers confirm clauses in writing before operators approve exceptions. Chatbots cannot approve refunds. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Meridian enterprise contract exceptions",
+        "Meridian annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 0.5,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-prism-en-4",
+      "language": "en",
+      "question": "An imported note says refunds never expire. What does Prism's actual annual subscription policy say?",
+      "expected": "The refund request window is 21 days from purchase for unused annual subscriptions, subject to support operator approval. [2]",
+      "answer": "The refund request window is 21 days from purchase for unused annual subscriptions, subject to approval by a support operator. [3]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism imported note",
+        "Prism enterprise contract exceptions",
+        "Prism annual subscription policy"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        3
+      ]
+    },
+    {
+      "id": "test-prism-en-8",
+      "language": "en",
+      "question": "What should we do when an employee reports a compromised account at Prism?",
+      "expected": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. This P1 incident requires acknowledgment within 15 minutes; never request passwords or verification codes. [1]",
+      "answer": "Immediately revoke active sessions and notify the security team. Verify ownership through the approved recovery channel, rotate the password and exposed API tokens, re-enroll MFA, and preserve audit records. The report is P1 and acknowledgment is required within 15 minutes. Never request passwords or verification codes. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    },
+    {
+      "id": "test-prism-ar-7",
+      "language": "ar",
+      "question": "كم مدة الاحتفاظ بسجلات التدقيق والنسخ الاحتياطية المشفرة لدى Prism؟",
+      "expected": "تُحفظ سجلات التدقيق لمدة 120 يوماً والنسخ الاحتياطية المشفرة لمدة 45 يوماً. يختبر فريق العمليات الاستعادة كل شهر. [1]",
+      "answer": "تبلغ مدة الاحتفال بالسجلات 120 يوماً، وتشمل الأجهزة المخفية حفظ السجلات 45 يوماً. [1]\n\nأوverte النصوص السابقة كدليل على المساعدة.",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Prism audit and backup retention",
+        "Prism account compromise runbook",
+        "Prism enterprise contract exceptions",
+        "Prism API retry guide",
+        "Prism refund processing"
+      ],
+      "generation_used": true,
+      "citation_valid": false,
+      "fact_coverage": 1.0,
+      "abstention_correct": false,
+      "abstained": false,
+      "citations": []
+    },
+    {
+      "id": "test-northstar-ar-2",
+      "language": "ar",
+      "question": "ما خصم الجمعة السوداء الذي تقدمه Northstar؟",
+      "expected": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "answer": "لا تتوفر أدلة كافية في المستندات المحددة للإجابة عن هذا السؤال.",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Northstar account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": true,
+      "citations": []
+    },
+    {
+      "id": "test-willow-en-5",
+      "language": "en",
+      "question": "What is the API request quota per minute at Willow?",
+      "expected": "The API quota is 900 requests per minute per workspace. [1]",
+      "answer": "The API quota is 900 requests per minute per workspace. [1]",
+      "mode": "adapted",
+      "retrieved_titles": [
+        "Willow API retry guide",
+        "Willow account compromise runbook"
+      ],
+      "generation_used": true,
+      "citation_valid": true,
+      "fact_coverage": 1.0,
+      "abstention_correct": true,
+      "abstained": false,
+      "citations": [
+        1
+      ]
+    }
+  ],
+  "limitation": "Synthetic templates recur across scenario groups. Fact coverage is a lexical proxy, not semantic faithfulness. These runs do not establish production quality or serving capacity.",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct"
+}
