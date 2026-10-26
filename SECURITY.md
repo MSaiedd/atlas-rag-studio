@@ -1,14 +1,53 @@
-# Security and deployment boundaries
+# Security boundaries
 
-These are portfolio applications validated locally. Do not expose them publicly unchanged.
-Bearer tokens are static development identities, not a complete account system. Rotate tokens
-by changing server configuration and restarting. Use HTTPS, an identity gateway, request size
-limits, rate limiting, monitoring, and restricted network access for a public deployment.
-Browser tokens are held only in page memory. Never put tokens in URLs or query parameters.
-SQLite persists state for a single server; use managed storage and tested backups before scaling.
-Model outputs are untrusted data. Application code enforces authorization and sensitive writes.
-Locally running Ollama may send inputs elsewhere if configured with a remote URL; choose trusted servers.
-No production integrations, external credentials, or real customer datasets are bundled.
+Atlas is locally validated portfolio software. Public operation requires configured identity,
+network controls, resource sizing and live operational validation.
 
-Report a vulnerability privately through the repository owner's GitHub profile contact methods.
-Do not post secrets or personal information in public issues.
+## Identity
+
+Local mode is an explicit shared workspace for one computer. The normal listener is 127.0.0.1;
+allowed hostnames and client networks are checked. The compose listener is also loopback-only,
+with its local Docker bridge range explicitly trusted. Never expose local-auth mode publicly.
+
+Hosted mode verifies signed OIDC JWTs against a configured HTTPS JWKS endpoint, issuer, audience,
+expiry, subject and workspace claim. Roles must be a list of recognized names. Access tokens stay
+in browser memory. A complete identity-provider login/PKCE flow is not bundled.
+
+Workspace identity cannot be supplied in request payloads. Sources are shared within a workspace;
+conversation history is scoped to its user. Vector results are filtered by workspace and then
+rechecked against active relational metadata before any passage enters a model prompt.
+
+## Files and model output
+
+Uploads have bounded size, extracted text, pages and passage counts. Files use generated storage
+paths; original filenames never select filesystem paths. Linux PDF parsing runs in a separate
+process with memory and CPU limits and a wall timeout. OCR and other formats are not supported.
+
+Documents and model output are untrusted text. React renders text and citation components without
+raw HTML. Content Security Policy and same-origin write checks apply. Provider credentials remain
+server-side. An external configured model provider receives the supplied evidence and conversation
+text; evaluate privacy requirements before using one.
+
+Citation checks validate source IDs and paragraph-level reference presence. They do not prove
+claim-level support and do not eliminate prompt injection. The generator has no business-action
+tools. A structurally valid answer can still be wrong and needs task-specific evaluation.
+
+## Persistence and retention
+
+Deletion revokes retrieval before asynchronous vector/file cleanup. Historic answers remain in
+conversations until those conversations are removed. Historic source excerpts are not duplicated
+in message storage; they are hydrated only while the original source remains active.
+
+Only load adapter/model artifacts from trusted operators. Training runs are executed outside the
+serving process. Never deserialize arbitrary user-supplied model files. Runtime data, real tokens,
+uploads and model caches are ignored by Git.
+
+## Production gates
+
+Use TLS, explicit hostnames, real OIDC integration, rate limiting, monitoring, tested backups and
+restore procedures. Deploy private PostgreSQL and authenticated private Qdrant. Validate parser
+limits, worker recovery, model quality, sustained traffic and dependency updates in your environment.
+No live enterprise identity provider, public hosting, high-traffic rollout or GPU QLoRA run is claimed.
+
+Report vulnerabilities through the repository owner's GitHub contact methods. Do not publish
+credentials or customer data in an issue.

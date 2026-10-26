@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Product & billing",
+    "description": "Plans, subscriptions, and billing policies",
+    "color": "indigo",
+    "files": [
+      "annual-subscription-policy.md",
+      "refund-processing.md",
+      "plan-entitlements.md"
+    ]
+  },
+  {
+    "name": "Engineering",
+    "description": "API behavior, reliability, and release practices",
+    "color": "teal",
+    "files": [
+      "api-rate-limits.md",
+      "idempotency-and-webhooks.md",
+      "release-checklist.md"
+    ]
+  },
+  {
+    "name": "Security & access",
+    "description": "Identity, account protection, and data handling",
+    "color": "rose",
+    "files": [
+      "compromised-account-runbook.md",
+      "workspace-roles.md",
+      "data-retention.md"
+    ]
+  },
+  {
+    "name": "Support operations",
+    "description": "Triage, escalation, and evidence-led answers",
+    "color": "amber",
+    "files": [
+      "ticket-triage.md",
+      "refund-review-workflow.md"
+    ]
+  }
+]

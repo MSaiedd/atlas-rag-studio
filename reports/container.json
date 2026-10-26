@@ -1,7 +1,18 @@
 {
-  "project": "supportpilot",
-  "result": "passed",
-  "image_id": "sha256:6320e7448d9e2df0f05a843501f2a5e1749794282ba0590773b624d52a97af48",
-  "non_root": true,
-  "checks": "isolated container startup and API flow; named-volume persistence; refund approval for SupportPilot; baseline training/inference for LoRA project"
+  "image_id": "sha256:99c339806c24aef7fa02555151e73ee699c6d4066682715c539301e27ff90c66",
+  "uid": 1000,
+  "liveness": {
+    "status": "loading",
+    "models_ready": false,
+    "error": "",
+    "version": "0.2.0"
+  },
+  "checks": [
+    "frontend served",
+    "non-root user",
+    "unready without models",
+    "upload persisted across container restart"
+  ],
+  "models": "Disabled for image/persistence smoke. Actual neural execution is recorded separately.",
+  "passed": true
 }

@@ -1,12 +1,6 @@
-"""Exercise the real browser UI with disposable identities and temporary state.
+"""Desktop/phone browser regression using a disposable, explicitly simulated model backend."""
 
-Install .[browser], then run `playwright install chromium` before this script.
-Screenshots are generated from synthetic data; no real credential is embedded.
-"""
-
-import json
 import os
-import secrets
 import socket
 import subprocess
 import sys
@@ -20,87 +14,117 @@ from playwright.sync_api import expect, sync_playwright
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    shots = root / "docs/screenshots"
-    shots.mkdir(parents=True, exist_ok=True)
-    customer, operator = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
-    tokens = {
-        customer: {"tenant": "demo", "user": "alice"},
-        operator: {"tenant": "demo", "user": "staff", "role": "operator"},
-    }
-    with tempfile.TemporaryDirectory() as temporary:
-        env = os.environ.copy()
-        env.update(API_TOKENS=json.dumps(tokens), DB_PATH=str(Path(temporary) / "app.db"))
-        # Local smoke runs must not inherit a developer's external provider settings.
-        env.update(ANSWER_BACKEND="extractive", AGENT_BACKEND="baseline")
-        for key in ("MODEL_ID", "ADAPTER_PATH", "EMBEDDING_MODEL"):
-            env.pop(key, None)
-        from supportpilot.store import Store
-
-        Store(env["DB_PATH"]).seed("demo", "alice")
+    screenshots = root / "reports/browser"
+    screenshots.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="atlas-browser-") as temporary:
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", 0))
             port = sock.getsockname()[1]
+        env = os.environ.copy()
+        env.update(
+            ATLAS_DATA_DIR=temporary,
+            ATLAS_DATABASE_URL=f"sqlite:///{temporary}/atlas.db",
+            ATLAS_AUTH_MODE="local",
+            ATLAS_MODEL_LOADING="false",
+            ATLAS_WORKER_ENABLED="true",
+        )
         address = f"http://127.0.0.1:{port}"
-        command = [
-            sys.executable,
-            "-m",
-            "uvicorn",
-            "supportpilot.api:create_app",
-            "--factory",
-            "--host",
-            "127.0.0.1",
-            "--port",
-            str(port),
-        ]
         with (Path(temporary) / "server.log").open("w") as log:
-            process = subprocess.Popen(command, cwd=root, env=env, stdout=log, stderr=log)
+            process = subprocess.Popen(
+                [
+                    sys.executable,
+                    "-m",
+                    "uvicorn",
+                    "scripts.fixture_server:app",
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    str(port),
+                ],
+                cwd=root,
+                env=env,
+                stdout=log,
+                stderr=log,
+            )
             try:
-                ready = False
                 for _ in range(100):
                     try:
-                        if httpx.get(address + "/health", timeout=1).status_code == 200:
-                            ready = True
+                        if httpx.get(address + "/ready", timeout=1).status_code == 200:
                             break
                     except httpx.HTTPError:
                         pass
                     if process.poll() is not None:
-                        raise RuntimeError(
-                            "Server failed: " + (Path(temporary) / "server.log").read_text()
-                        )
+                        raise RuntimeError((Path(temporary) / "server.log").read_text())
                     time.sleep(0.1)
-                if not ready:
-                    raise RuntimeError("Server startup timed out")
-                errors = []
                 with sync_playwright() as playwright:
                     browser = playwright.chromium.launch()
-                    page = browser.new_page(
-                        viewport={"width": 1280, "height": 1050}, device_scale_factor=1
-                    )
+                    page = browser.new_page(viewport={"width": 1440, "height": 1000})
+                    errors = []
                     page.on("pageerror", lambda error: errors.append(str(error)))
                     page.goto(address)
-                    page.locator("#token").fill(customer)
-                    page.get_by_role("button", name="Submit ticket").click()
-                    expect(page.locator("#ticket-result")).to_contain_text("pending")
-                    page.locator("#token").fill(operator)
-                    page.get_by_role("button", name="Load pending approvals").click()
-                    expect(page.locator("#pending")).to_contain_text("DEMO-1001")
-                    page.get_by_role("button", name="Approve sandbox refund").click()
-                    expect(page.locator("#pending")).to_contain_text("No pending requests")
-                    page.get_by_role("button", name="View audit log").click()
-                    expect(page.locator("#audit")).to_contain_text("refund.approved")
-                    page.screenshot(path=str(shots / "desktop.png"), full_page=True)
-                    page.set_viewport_size({"width": 390, "height": 844})
-                    assert page.evaluate(
-                        "document.documentElement.scrollWidth <= window.innerWidth"
-                    ), "Mobile horizontal overflow"
-                    page.screenshot(path=str(shots / "mobile.png"), full_page=True)
+                    page.get_by_role("button", name="New collection", exact=True).click()
+                    page.get_by_label("Name", exact=True).fill("Browser policies")
+                    page.get_by_label("Description", exact=True).fill(
+                        "Disposable browser regression"
+                    )
+                    page.get_by_role("button", name="Create collection", exact=True).click()
+                    expect(page.get_by_role("dialog")).not_to_be_visible()
+                    page.get_by_role(
+                        "button", name="Add knowledge sources", exact=True
+                    ).first.click()
+                    page.get_by_label("Choose documents").set_input_files(
+                        {
+                            "name": "refund-policy.md",
+                            "mimeType": "text/markdown",
+                            "buffer": b"# Refund policy\nRefund requests require review within fourteen days. <script>window.atlasXss=true</script>",
+                        }
+                    )
+                    expect(page.get_by_role("dialog")).not_to_be_visible(timeout=10000)
+                    for _ in range(100):
+                        if httpx.get(address + "/api/documents").json()[0]["status"] == "ready":
+                            break
+                        time.sleep(0.1)
+                    page.get_by_role("textbox", name="Ask your knowledge").fill(
+                        "What is the refund window?"
+                    )
+                    page.get_by_role("button", name="Send question").click()
+                    expect(
+                        page.get_by_text("The refund window is fourteen days", exact=False)
+                    ).to_be_visible(timeout=15000)
+                    page.get_by_role("button", name="Open source 1", exact=True).click()
+                    expect(page.locator("#source-1")).to_be_visible()
+                    page.get_by_role("button", name="Mark answer helpful").click()
+                    page.get_by_role("button", name="Inspect run").click()
+                    expect(page.get_by_role("dialog", name="Inside this answer")).to_be_visible()
+                    page.get_by_role("button", name="Close dialog").click()
+                    page.get_by_role("button", name="Open document", exact=True).click()
+                    expect(page.get_by_role("dialog")).to_contain_text(
+                        "<script>window.atlasXss=true</script>"
+                    )
+                    assert page.evaluate("window.atlasXss !== true")
+                    page.get_by_role("button", name="Close dialog").click()
+                    page.screenshot(path=str(screenshots / "desktop.png"), full_page=True)
+                    phone = browser.new_page(
+                        viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True
+                    )
+                    phone.on("pageerror", lambda error: errors.append(str(error)))
+                    phone.goto(address)
+                    expect(phone.get_by_role("textbox", name="Ask your knowledge")).to_be_visible()
+                    assert phone.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    phone.get_by_role("button", name="Open navigation").click()
+                    phone.locator("nav").get_by_role("button", name="Knowledge").click()
+                    expect(phone.get_by_role("heading", name="Knowledge library.")).to_be_visible()
+                    assert phone.evaluate("document.documentElement.scrollWidth <= innerWidth")
+                    phone.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
                     assert not errors, errors
                     browser.close()
-                print("PASS: desktop flow, mobile layout, no uncaught browser errors")
+                print(
+                    "PASS: real browser upload/index/chat/citations/feedback/trace/preview, escaped document text, mobile navigation and layout. Neural components were simulated."
+                )
             finally:
                 process.terminate()
                 try:
-                    process.wait(timeout=5)
+                    process.wait(timeout=10)
                 except subprocess.TimeoutExpired:
                     process.kill()
                     process.wait()

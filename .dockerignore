@@ -8,3 +8,13 @@ models
 data/*.db*
 __pycache__
 .pytest_cache
+frontend/node_modules
+frontend/dist
+frontend/test-results
+tests
+build
+dist
+reports
+docs/screenshots
+data/qdrant
+data/uploads

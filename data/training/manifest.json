@@ -1,0 +1,15 @@
+{
+  "provenance": "Original synthetic, templated, counterfactual policy scenarios. No real customer data.",
+  "split_unit": "organization/scenario group",
+  "limitation": "Task templates recur across groups; this tests counterfactual grounding, not unseen-domain generalization.",
+  "counts": {
+    "train": 240,
+    "validation": 60,
+    "test": 80
+  },
+  "sha256": {
+    "train": "3c8f6d6ae867b1c01e0779858da8de28d3f12eb036dce20414bad126dd1ce899",
+    "validation": "ff2fbf2ae34fdee0f337aa00e1b32e227b937ebcb312c1d2e23c3d1a3a6f2e57",
+    "test": "e3c0f0fda1f42b42bc7db5ce35197842b9374d3d04b2b0e3c02f9dd30035c5eb"
+  }
+}

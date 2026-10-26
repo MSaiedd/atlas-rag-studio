@@ -1,7 +1,8 @@
-"""Validate disposable portfolio containers, persistence, and non-root execution."""
+"""Validate the built image, non-root execution and persistence without downloading models."""
 
+import argparse
 import json
-import secrets
+import socket
 import subprocess
 import time
 import uuid
@@ -9,148 +10,100 @@ from pathlib import Path
 
 import httpx
 
-ROOT = Path(__file__).resolve().parents[1]
+
+def docker(*args):
+    return subprocess.check_output(["docker", *args], text=True).strip()
 
 
-def command(*args):
-    return subprocess.run(
-        ["docker", *args], check=True, capture_output=True, text=True
-    ).stdout.strip()
+def wait(client):
+    for _ in range(100):
+        try:
+            response = client.get("/health")
+            if response.status_code == 200:
+                return response.json()
+        except httpx.HTTPError:
+            pass
+        time.sleep(0.2)
+    raise RuntimeError("Container did not become live")
 
 
-def run(project):
-    suffix = uuid.uuid4().hex[:10]
-    name = "portfolio-check-" + suffix
-    volume = "portfolio-check-data-" + suffix
-    image = project + ":portfolio"
-    token, operator = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
-    identities = json.dumps(
-        {
-            token: {"tenant": "demo", "user": "alice"},
-            operator: {"tenant": "demo", "user": "staff", "role": "operator"},
-        }
-    )
-    headers = {"Authorization": "Bearer " + token}
-    mount = "/app/artifacts" if project == "arabic-support-lora" else "/app/data"
-    command("volume", "create", volume)
-
-    def launch():
-        command(
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--image", default="atlas-rag-studio:local")
+    args = parser.parse_args()
+    name = "atlas-image-check-" + uuid.uuid4().hex[:10]
+    volume = name + "-data"
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        port = listener.getsockname()[1]
+    docker("volume", "create", volume)
+    try:
+        docker(
             "run",
-            "--rm",
+            "-d",
             "--name",
             name,
-            "-d",
             "-p",
-            "127.0.0.1::8000",
+            f"127.0.0.1:{port}:8000",
             "-e",
-            "API_TOKENS=" + identities,
+            "ATLAS_MODEL_LOADING=false",
+            "-e",
+            "ATLAS_WORKER_ENABLED=false",
+            "-e",
+            "ATLAS_LOCAL_CLIENT_NETWORKS=127.0.0.0/8,172.16.0.0/12",
             "-v",
-            volume + ":" + mount,
-            image,
+            volume + ":/app/data",
+            args.image,
         )
-        address = "http://" + command("port", name, "8000/tcp").splitlines()[0]
-        for _ in range(120):
-            try:
-                if httpx.get(address + "/health", timeout=1).status_code == 200:
-                    return address
-            except httpx.HTTPError:
-                pass
-            time.sleep(0.25)
-        raise RuntimeError("Container failed to start: " + command("logs", name)[-2000:])
-
-    try:
-        if project == "supportpilot":
-            command(
-                "run",
-                "--rm",
-                "-v",
-                volume + ":" + mount,
-                image,
-                "python",
-                "-m",
-                "supportpilot.seed",
+        with httpx.Client(base_url=f"http://127.0.0.1:{port}", timeout=10) as client:
+            health = wait(client)
+            assert client.get("/ready").status_code == 503
+            assert "Atlas" in client.get("/").text
+            uid = docker("exec", name, "id", "-u")
+            assert uid != "0"
+            collection = client.post("/api/collections", json={"name": "Image check"})
+            collection.raise_for_status()
+            collection_id = collection.json()["id"]
+            uploaded = client.post(
+                "/api/documents",
+                data={"collection_id": collection_id},
+                files={
+                    "file": (
+                        "policy.md",
+                        b"# Original policy\nImage persistence check.",
+                        "text/markdown",
+                    )
+                },
             )
-        elif project == "arabic-support-lora":
-            command(
-                "run",
-                "--rm",
-                "-v",
-                volume + ":" + mount,
-                image,
-                "python",
-                "-m",
-                "support_lora.baseline",
-            )
-        address = launch()
-        assert command("exec", name, "id", "-u") != "0"
-        if project == "citewise":
-            assert (
-                httpx.post(
-                    address + "/documents",
-                    headers=headers,
-                    json={"title": "Container policy", "text": "Refunds take five business days."},
-                ).status_code
-                == 201
-            )
-            answer = httpx.post(
-                address + "/query", headers=headers, json={"question": "refunds"}
-            ).json()
-            assert "five" in answer["answer"] and answer["citations"]
-            command("stop", name)
-            address = launch()
-            assert len(httpx.get(address + "/documents", headers=headers).json()) == 1
-        elif project == "supportpilot":
-            ticket = httpx.post(
-                address + "/tickets",
-                headers=headers,
-                json={"message": "Please refund this order", "order_id": "DEMO-1001"},
-            ).json()
-            refund_id = ticket["refunds"][0]["id"]
-            assert (
-                httpx.post(
-                    address + "/refunds/" + refund_id + "/decision",
-                    headers=headers,
-                    json={"approve": True},
-                ).status_code
-                == 403
-            )
-            result = httpx.post(
-                address + "/refunds/" + refund_id + "/decision",
-                headers={"Authorization": "Bearer " + operator},
-                json={"approve": True},
-            )
-            assert result.json()["status"] == "approved"
-            command("stop", name)
-            address = launch()
-            assert (
-                httpx.get(address + "/tickets/" + ticket["id"], headers=headers).json()["refunds"][
-                    0
-                ]["status"]
-                == "approved"
-            )
-        else:
-            result = httpx.post(
-                address + "/predict", headers=headers, json={"text": "أريد استرداد المبلغ"}
-            )
-            assert result.status_code == 200 and result.json()["backend"] == "tfidf-baseline"
-            assert (
-                httpx.post(address + "/predict", json={"text": "refund please"}).status_code == 401
-            )
-        report = {
-            "project": project,
-            "result": "passed",
-            "image_id": command("image", "inspect", image, "--format", "{{.Id}}"),
-            "non_root": True,
-            "checks": "isolated container startup and API flow; named-volume persistence; refund approval for SupportPilot; baseline training/inference for LoRA project",
-        }
-        path = ROOT / "reports/container.json"
-        path.write_text(json.dumps(report, indent=2) + "\n")
-        print(json.dumps(report), flush=True)
+            uploaded.raise_for_status()
+            document_id = uploaded.json()["id"]
+            docker("restart", name)
+            wait(client)
+            documents = client.get("/api/documents").json()
+            assert any(row["id"] == document_id for row in documents)
+            report = {
+                "image_id": docker("image", "inspect", args.image, "--format", "{{.Id}}"),
+                "uid": int(uid),
+                "liveness": health,
+                "checks": [
+                    "frontend served",
+                    "non-root user",
+                    "unready without models",
+                    "upload persisted across container restart",
+                ],
+                "models": "Disabled for image/persistence smoke. Actual neural execution is recorded separately.",
+                "passed": True,
+            }
+            Path("reports").mkdir(exist_ok=True)
+            Path("reports/container.json").write_text(json.dumps(report, indent=2) + "\n")
+            print(json.dumps(report, indent=2))
+    except Exception:
+        print(docker("logs", name))
+        raise
     finally:
-        subprocess.run(["docker", "rm", "-f", name], capture_output=True)
-        subprocess.run(["docker", "volume", "rm", volume], capture_output=True)
+        subprocess.run(["docker", "rm", "-f", name], stdout=subprocess.DEVNULL, check=False)
+        subprocess.run(["docker", "volume", "rm", volume], stdout=subprocess.DEVNULL, check=False)
 
 
 if __name__ == "__main__":
-    run("supportpilot")
+    main()

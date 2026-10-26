@@ -1,0 +1,30 @@
+{
+  "name": "atlas-rag-studio-ui",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "check": "tsc -b",
+    "test": "vitest run",
+    "format:check": "prettier --check src vite.config.ts tsconfig*.json package.json"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0",
+    "vitest": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

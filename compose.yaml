@@ -1,0 +1,48 @@
+services:
+  app:
+    build: .
+    ports: ["127.0.0.1:8001:8000"]
+    environment:
+      ATLAS_DATABASE_URL: postgresql+psycopg://atlas:${ATLAS_POSTGRES_PASSWORD:?Set ATLAS_POSTGRES_PASSWORD}@postgres:5432/atlas
+      ATLAS_DATA_DIR: /app/data
+      ATLAS_QDRANT_URL: http://qdrant:6333
+      ATLAS_QDRANT_API_KEY: ${ATLAS_QDRANT_API_KEY:?Set ATLAS_QDRANT_API_KEY}
+      ATLAS_AUTH_MODE: ${ATLAS_AUTH_MODE:-local}
+      ATLAS_LOCAL_CLIENT_NETWORKS: 127.0.0.0/8,::1/128,172.16.0.0/12
+      ATLAS_ALLOWED_HOSTS: ${ATLAS_ALLOWED_HOSTS:-localhost,127.0.0.1}
+      ATLAS_OIDC_ISSUER: ${ATLAS_OIDC_ISSUER:-}
+      ATLAS_OIDC_AUDIENCE: ${ATLAS_OIDC_AUDIENCE:-}
+      ATLAS_OIDC_JWKS_URL: ${ATLAS_OIDC_JWKS_URL:-}
+      ATLAS_ADAPTER_PATH: /app/artifacts/grounded-lora
+    volumes:
+      - app-data:/app/data
+      - model-cache:/home/app/.cache/huggingface
+      - ./artifacts:/app/artifacts:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+      qdrant: {condition: service_started}
+    restart: unless-stopped
+  postgres:
+    image: postgres:17.11
+    environment:
+      POSTGRES_USER: atlas
+      POSTGRES_PASSWORD: ${ATLAS_POSTGRES_PASSWORD:?Set ATLAS_POSTGRES_PASSWORD}
+      POSTGRES_DB: atlas
+    volumes: ["postgres-data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+  qdrant:
+    image: qdrant/qdrant:v1.20.0
+    environment:
+      QDRANT__SERVICE__API_KEY: ${ATLAS_QDRANT_API_KEY:?Set ATLAS_QDRANT_API_KEY}
+    volumes: ["qdrant-data:/qdrant/storage"]
+    restart: unless-stopped
+volumes:
+  app-data:
+  postgres-data:
+  qdrant-data:
+  model-cache:

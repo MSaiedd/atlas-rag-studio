@@ -3,23 +3,25 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "supportpilot"
-version = "0.1.0"
-description = "Tool-using support workflow with approval-gated sandbox refunds"
+name = "atlas-rag-studio"
+version = "0.2.0"
+description = "A grounded knowledge workspace with hybrid RAG, reranking and reproducible LoRA training"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["fastapi>=0.119,<1", "uvicorn[standard]>=0.37,<1", "httpx>=0.28,<1"]
+dependencies = ["fastapi>=0.119,<1", "uvicorn[standard]>=0.37,<1", "httpx>=0.28,<1", "sqlalchemy>=2.0,<2.1", "psycopg[binary]>=3.2,<4", "qdrant-client>=1.15,<2", "pydantic-settings>=2.10,<3", "pypdf>=6,<7", "python-multipart>=0.0.20", "pyjwt[crypto]>=2.10,<3", "numpy>=2.2,<3"]
 
 [project.optional-dependencies]
 browser = ["playwright>=1.50,<2"]
 dev = ["pytest>=8,<10", "pytest-cov>=6,<8", "ruff>=0.14,<1"]
+models = ["torch>=2.6,<3", "transformers>=4.57,<5", "peft>=0.17,<0.19", "accelerate>=1.10,<2"]
+qlora = ["bitsandbytes>=0.47,<0.50"]
 
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-supportpilot = ["web/*"]
+atlas_rag = ["web/*", "web/assets/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -32,4 +34,4 @@ target-version = "py311"
 select = ["E4", "E7", "E9", "F", "I", "B", "UP"]
 
 [tool.ruff.lint.flake8-bugbear]
-extend-immutable-calls = ["fastapi.Depends"]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.File", "fastapi.Form"]
